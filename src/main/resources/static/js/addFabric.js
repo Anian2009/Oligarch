@@ -63,6 +63,7 @@ $(document).ready(function () {
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json',
+            headers: {token: sessionStorage.getItem("token")},
             data: JSON.stringify({
                 new_price: p,
                 new_name: n,

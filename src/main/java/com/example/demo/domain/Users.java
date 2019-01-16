@@ -12,7 +12,7 @@ public class Users implements Comparable<Users> {
 
     private String name;
     private String email;
-    public Double silver_balance;
+    private Double silver_balance;
     private Double gold_balance;
     private String user_role;
     private String password;

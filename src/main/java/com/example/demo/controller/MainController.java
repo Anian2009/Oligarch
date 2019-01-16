@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class UserController {
+public class MainController {
 
     @Autowired
     private FabricsRepository fabricsRepository;
@@ -29,13 +29,39 @@ public class UserController {
     @Autowired
     private UsersRepository usersRepository;
 
-    @GetMapping("/api/user/dashboard")
+
+    @GetMapping("1111")
+    public void test() {
+
+        System.out.println("usersRepository"+usersRepository);
+        List<Users> users = usersRepository.findAll();
+        System.out.println("users"+users);
+
+    }
+
+
+    @GetMapping("api/user/dashboard")
     public Map<String, Object> myFabric(@RequestParam Integer id) {
+
+                System.out.println("Start="+id);
+
         Map<String, Object> response = new HashMap<>();
         Users user = usersRepository.findById(id);
+
+                System.out.println("UserName="+user.getName());
+
         Iterable<UserFabrics> fabrics = userFabricsRepository.findByMaster(user);
-        List<Users> users = usersRepository.findAll();
+
+                System.out.println("userFabricsRepository="+userFabricsRepository);
+                System.out.println("fabrics="+fabrics);
+                System.out.println("usersRepository="+usersRepository);
+
+                List<Users> users = usersRepository.findAll();
+//        List<Users> users = usersRepository.findAll();
         Collections.sort(users);
+
+                System.out.println("users="+users);
+
         response.put("fabrics", fabrics);
         response.put("user", user);
         response.put("users", users);
