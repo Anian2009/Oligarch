@@ -65,14 +65,13 @@ $(document).ready(function () {
             contentType: 'application/json',
             headers: {token: sessionStorage.getItem("token")},
             data: JSON.stringify({
-                new_price: p,
-                new_name: n,
-                new_upgrad: u,
-                new_mining: m,
+                newPrice: p,
+                newName: n,
+                newUpgrade: u,
+                newMining: m,
                 image: i,
             }),
             success: function (data) {
-                console.log("Дані відправлено успішно");
 
                 var emploee_data = '';
                 emploee_data += '<tr>';

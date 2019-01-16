@@ -14,25 +14,29 @@ import java.util.Map;
 @RestController
 public class AdminController {
 
+    private final FabricsRepository fabricsRepository;
+
     @Autowired
-    private FabricsRepository fabricsRepository;
+    public AdminController(FabricsRepository fabricsRepository) {
+        this.fabricsRepository = fabricsRepository;
+    }
 
     @GetMapping("api/admin/factory-list")
-    public Map<String, Object> factory_market_list() {
+    public Map<String, Object> factoryMarketList() {
         Map<String, Object> response = new HashMap<>();
         Iterable<Fabrics> fabrics = fabricsRepository.findAll();
         response.put("fabrics", fabrics);
         return response;
     }
 
-    @PostMapping("/api/admin/add-factory")
+    @PostMapping("api/admin/add-factory")
     public Map<String, Object> addFabric(@RequestBody Map<String, String> body) {
         Map<String, Object> response = new HashMap<>();
         Fabrics fabric = new Fabrics(
-                Double.parseDouble(body.get("new_price")),
-                body.get("new_name"),
-                Double.parseDouble(body.get("new_upgrad")),
-                Double.parseDouble(body.get("new_mining")),
+                Double.parseDouble(body.get("newPrice")),
+                body.get("newName"),
+                Double.parseDouble(body.get("newUpgrade")),
+                Double.parseDouble(body.get("newMining")),
                 body.get("image"));
         fabricsRepository.save(fabric);
         response.put("message", "OK");
