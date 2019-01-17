@@ -3,21 +3,21 @@ $(document).ready(function () {
     console.log("Hello buyFabric.js");
 
     let userInafo = function (data) {
-        document.getElementById('user_name').innerHTML = '<text>' + data.name + ':</text>';
-        document.getElementById('silver_bal').innerHTML = '<text>Silver balance - ' + data.silverBalance + ';</text>';
-        document.getElementById('gold_bal').innerHTML = '<text>Gold balance - ' + data.goldBalance + ';</text>';
-        document.getElementById('incrise').innerHTML = '<text>Increase per second - ' + data.increase + ';</text>';
+        document.getElementById('userName').innerHTML = '<text>' + data.name + ':</text>';
+        document.getElementById('silverBal').innerHTML = '<text>Silver balance - ' + data.silverBalance + ';</text>';
+        document.getElementById('goldBal').innerHTML = '<text>Gold balance - ' + data.goldBalance + ';</text>';
+        document.getElementById('increase').innerHTML = '<text>Increase per second - ' + data.increase + ';</text>';
     };
 
     let usersInafo = function (data) {
-        $('#users_list').html('');
+        $('#usersList').html('');
         let list;
         data.forEach(function (item) {
             list = '<li>';
             list += item.name + ' - ';
             list += item.silverBalance + ';';
             list += '</li>';
-            $('#users_list').append(list);
+            $('#usersList').append(list);
         })
     };
 
@@ -33,7 +33,7 @@ $(document).ready(function () {
                 usersInafo(data.users)
             },
             error: function (jqXHR) {
-                console.log(jqXHR.status);
+                alert(jqXHR.status + " : "+jqXHR.statusText);
             }
         });
     };
@@ -42,15 +42,15 @@ $(document).ready(function () {
 
     let fabricsList = function (data) {
         data.fabrics.forEach(function (item) {
-            let emploee_data = '';
-            emploee_data += '<tr>';
-            emploee_data += '<td align="left">' + item.fabricName + '</td>';
-            emploee_data += '<td align="center">' + item.price + '</td>';
-            emploee_data += '<td align="center">' + item.upgrade + '</td>';
-            emploee_data += '<td align="center">' + item.miningPerSecond + '</td>';
-            emploee_data += '<td align="center"><button id="' + item.id + '" name="bu' + item.id + '" type="button" class="btn btn-primary btn-sm">Buy</button>';
-            emploee_data += '</tr>';
-            $('#factories_to_buy').append(emploee_data);
+            let emploeeData = '';
+            emploeeData += '<tr>';
+            emploeeData += '<td align="left">' + item.fabricName + '</td>';
+            emploeeData += '<td align="center">' + item.price + '</td>';
+            emploeeData += '<td align="center">' + item.upgrade + '</td>';
+            emploeeData += '<td align="center">' + item.miningPerSecond + '</td>';
+            emploeeData += '<td align="center"><button id="' + item.id + '" name="bu' + item.id + '" type="button" class="btn btn-primary btn-sm">Buy</button>';
+            emploeeData += '</tr>';
+            $('#factoriesToBuy').append(emploeeData);
         })
     };
 
@@ -63,7 +63,7 @@ $(document).ready(function () {
             fabricsList(data);
         },
         error: function (jqXHR) {
-            alert(jqXHR);
+            alert(jqXHR.status + " : "+jqXHR.statusText);
         }
     });
 
@@ -88,7 +88,7 @@ $(document).ready(function () {
         buyFabric(this.id);
     });
 
-    $('#log_out').click(function () {
+    $('#logOut').click(function () {
         sessionStorage.clear();
         window.location = '../index.html';
     });

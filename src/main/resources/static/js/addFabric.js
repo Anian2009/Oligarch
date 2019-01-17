@@ -5,14 +5,14 @@ $(document).ready(function () {
 
     function showFabricList(data) {
         data.fabrics.forEach(function (item) {
-            var emploee_data = '';
-            emploee_data += '<tr>';
-            emploee_data += '<td>' + item.fabricName + '</td>';
-            emploee_data += '<td>' + item.price + '</td>';
-            emploee_data += '<td>' + item.upgrade + '</td>';
-            emploee_data += '<td>' + item.miningPerSecond + '</td>';
-            emploee_data += '</tr>';
-            $('#emploe_table').append(emploee_data);
+            var emploeeData = '';
+            emploeeData += '<tr>';
+            emploeeData += '<td>' + item.fabricName + '</td>';
+            emploeeData += '<td>' + item.price + '</td>';
+            emploeeData += '<td>' + item.upgrade + '</td>';
+            emploeeData += '<td>' + item.miningPerSecond + '</td>';
+            emploeeData += '</tr>';
+            $('#emploe_table').append(emploeeData);
         })
     }
 
@@ -24,13 +24,13 @@ $(document).ready(function () {
         success: function (data) {
             showFabricList(data);
         },
-        error: function (jqXHR) {
-            alert("FUCK!!!");
+        error: function () {
+            alert("No server connection");
         }
     });
 
     $('#add_fabric').click(function () {
-        var p, n, u, m, i;
+        let p, n, u, m, i;
 
         if ((p = $('#new_price').val()) === null || p.replace(/\s+/g, '') === "") {
             alert("Any factory is worth something!");
@@ -56,9 +56,6 @@ $(document).ready(function () {
             return false
         }
 
-        console.log("Post zapros start");
-        console.log(image);
-
         $.ajax('/api/admin/add-factory', {
             type: 'POST',
             dataType: 'json',
@@ -71,7 +68,7 @@ $(document).ready(function () {
                 newMining: m,
                 image: i,
             }),
-            success: function (data) {
+            success: function () {
 
                 var emploee_data = '';
                 emploee_data += '<tr>';
@@ -82,15 +79,16 @@ $(document).ready(function () {
                 emploee_data += '</tr>';
                 $('#emploe_table').append(emploee_data);
 
-                $('#new_image').html("");
+                $('#new_image').type = 'hidden';
+                // $('#new_image').style.display = 'none';
                 $('#new_price').val("");
                 $('#new_name').val("");
                 $('#new_upgrad').val("");
                 $('#new_mining').val("");
 
             },
-            error: function (jqXHR) {
-                alert("FUCK!!!");
+            error: function () {
+                alert("Data is not sent to the server.");
             }
         });
     });

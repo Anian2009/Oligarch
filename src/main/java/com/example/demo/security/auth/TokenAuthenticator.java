@@ -19,13 +19,6 @@ public class TokenAuthenticator implements Authenticator<TokenCredentials> {
     public void validate(TokenCredentials credentials, WebContext context) {
 
         Users user = usersRepository.findByToken(credentials.getToken());
-
-
-
-//        System.out.println("Token = "+credentials.getToken());
-//        System.out.println("User="+user.getName());
-//        System.out.println("UserRole="+user.getuserRole());
-
         if (user != null) {
             CommonProfile profile = new CommonProfile();
             profile.addRole(user.getuserRole());

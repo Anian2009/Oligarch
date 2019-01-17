@@ -5,22 +5,22 @@ $(document).ready(function () {
     let goldCoins;
 
     let userInafo = function (data) {
-        document.getElementById('user_name').innerHTML = '<text>' + data.name + ':</text>';
-        document.getElementById('silver_bal').innerHTML = '<text>Silver balance - ' + data.silverBalance + ';</text>';
-        document.getElementById('gold_bal').innerHTML = '<text>Gold balance - ' + data.goldBalance + ';</text>';
-        document.getElementById('incrise').innerHTML = '<text>Increase per second - ' + data.increase + ';</text>';
+        document.getElementById('userName').innerHTML = '<text>' + data.name + ':</text>';
+        document.getElementById('silverBal').innerHTML = '<text>Silver balance - ' + data.silverBalance + ';</text>';
+        document.getElementById('goldBal').innerHTML = '<text>Gold balance - ' + data.goldBalance + ';</text>';
+        document.getElementById('increase').innerHTML = '<text>Increase per second - ' + data.increase + ';</text>';
         goldCoins = Math.trunc(data.goldBalance);
     };
 
     let usersInafo = function (data) {
-        $('#users_list').html('');
+        $('#usersList').html('');
         let list;
         data.forEach(function (item) {
             list = '<li>';
             list += item.name + ' - ';
             list += item.silverBalance + ';';
             list += '</li>';
-            $('#users_list').append(list);
+            $('#usersList').append(list);
         })
     };
 
@@ -36,7 +36,7 @@ $(document).ready(function () {
                 usersInafo(data.users)
             },
             error: function (jqXHR) {
-                console.log(jqXHR.toString());
+                alert(jqXHR.status + " : "+jqXHR.statusText);
             }
         });
     };
@@ -64,19 +64,19 @@ $(document).ready(function () {
 
     function showMyFabric(data) {
         $('#user-card').html('');
-        let card_data;
+        let cardData;
         data.forEach(function (item) {
-            card_data = '<div class="card text-white bg-dark mb-3">';
-            card_data += '<img class="card-img-top" height="200" src=' + item.fabric.img + ' alt=' + item.fabric.img + '>';
-            card_data += '<div class="card-body">';
-            card_data += '<h5 class="card-title"> ' + item.fabric.fabricName + ' :</h5>';
-            card_data += '<div class="card-text">mining per second - ' + item.miningPerSecond + ' ;</div>';
-            card_data += '<div class="card-text">level - ' + item.fabricLevel + ' ;</div>';
-            card_data += '<div class="card-text">upgrade price - ' + item.fabric.upgrade + ' ;</div>';
-            card_data += '<p></p><a id="' + item.id + '" name="up' + item.id + '" class="btn btn-primary">Upgrade</a>';
-            card_data += '</div>';
-            card_data += '</div>';
-            $('#user-card').append(card_data);
+            cardData = '<div class="card text-white bg-dark mb-3">';
+            cardData += '<img class="card-img-top" height="200" src=' + item.fabric.img + ' alt=' + item.fabric.img + '>';
+            cardData += '<div class="card-body">';
+            cardData += '<h5 class="card-title"> ' + item.fabric.fabricName + ' :</h5>';
+            cardData += '<div class="card-text">mining per second - ' + item.miningPerSecond + ' ;</div>';
+            cardData += '<div class="card-text">level - ' + item.fabricLevel + ' ;</div>';
+            cardData += '<div class="card-text">upgrade price - ' + item.fabric.upgrade + ' ;</div>';
+            cardData += '<p></p><a id="' + item.id + '" name="up' + item.id + '" class="btn btn-primary">Upgrade</a>';
+            cardData += '</div>';
+            cardData += '</div>';
+            $('#user-card').append(cardData);
         })
     }
 
@@ -101,7 +101,7 @@ $(document).ready(function () {
         },
     });
 
-    $('#log_out').click(function () {
+    $('#logOut').click(function () {
         sessionStorage.clear();
         window.location = '../index.html';
     });

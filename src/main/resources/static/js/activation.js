@@ -9,10 +9,10 @@ $(document).ready(function () {
         dataType: 'json',
         contentType: 'application/json',
         data: {code: code},
-        success: function (data) {
+        success: function () {
             $('#message').html("You have successfully completed the registration and you can log into the game using your name and password.");
         },
-        error: function (jqXHR) {
+        error: function () {
             $('#message').html("Sorry something went wrong. Repeat registration will help resolve this error.");
         }
     })

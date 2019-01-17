@@ -12,10 +12,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class Pac4jConfig {
-    public static final String HEADER_TOKEN_NAME = "token";
+    private static final String HEADER_TOKEN_NAME = "token";
+
+    private final UsersRepository usersRepository;
 
     @Autowired
-    UsersRepository usersRepository;
+    public Pac4jConfig(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
+    }
 
     @Bean
     public Config config() {
