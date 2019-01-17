@@ -1,10 +1,18 @@
 package com.example.demo.domain;
 
+import com.example.demo.repository.UserFabricsRepository;
+import com.example.demo.repository.UsersRepository;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "user_fabrics_info")
 public class UserFabrics {
+
+
+
+
+    private static final Integer START_LEVEL = 1;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,17 +26,27 @@ public class UserFabrics {
     @JoinColumn(name = "fabric_id")
     private Fabrics fabric;
 
-    private Integer fabric_leval;
-    private Double fab_mining_p_s;
+    @JoinColumn(name = "fabric_leval")
+    private Integer fabricLevel;
+
+    @JoinColumn(name = "fab_mining_p_s")
+    private Double miningPerSecond;
 
     public UserFabrics() {
     }
 
-    public UserFabrics(Users master, Fabrics fabric, Integer fabric_leval, Double fab_mining_p_s) {
+    public UserFabrics(Users master, Fabrics fabric, Integer fabricLevel, Double miningPerSecond) {
         this.master = master;
         this.fabric = fabric;
-        this.fabric_leval = fabric_leval;
-        this.fab_mining_p_s = fab_mining_p_s;
+        this.fabricLevel = fabricLevel;
+        this.miningPerSecond = miningPerSecond;
+    }
+
+    public UserFabrics(Users user, Fabrics fabric, Double miningPerSecond) {
+        this.master = user;
+        this.fabric = fabric;
+        this.fabricLevel = START_LEVEL;
+        this.miningPerSecond = miningPerSecond;
     }
 
     public Integer getId() {
@@ -55,19 +73,20 @@ public class UserFabrics {
         this.fabric = fabric;
     }
 
-    public Integer getFabric_leval() {
-        return fabric_leval;
+    public Integer getfabricLevel() {
+        return fabricLevel;
     }
 
-    public void setFabric_leval(Integer fabric_leval) {
-        this.fabric_leval = fabric_leval;
+    public void setfabricLevel(Integer fabricLevel) {
+        this.fabricLevel = fabricLevel;
     }
 
-    public Double getFab_mining_p_s() {
-        return fab_mining_p_s;
+    public Double getminingPerSecond() {
+        return miningPerSecond;
     }
 
-    public void setFab_mining_p_s(Double fab_mining_p_s) {
-        this.fab_mining_p_s = fab_mining_p_s;
+    public void setminingPerSecond(Double miningPerSecond) {
+        this.miningPerSecond = miningPerSecond;
     }
+
 }

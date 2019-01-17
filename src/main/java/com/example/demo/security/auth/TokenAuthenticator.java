@@ -24,11 +24,11 @@ public class TokenAuthenticator implements Authenticator<TokenCredentials> {
 
 //        System.out.println("Token = "+credentials.getToken());
 //        System.out.println("User="+user.getName());
-//        System.out.println("UserRole="+user.getUser_role());
+//        System.out.println("UserRole="+user.getuserRole());
 
         if (user != null) {
             CommonProfile profile = new CommonProfile();
-            profile.addRole(user.getUser_role());
+            profile.addRole(user.getuserRole());
             credentials.setUserProfile(profile);
         }
     }

@@ -12,30 +12,30 @@ public class Users implements Comparable<Users> {
 
     private String name;
     private String email;
-    private Double silver_balance;
-    private Double gold_balance;
-    private String user_role;
+    private Double silverBalance;
+    private Double goldBalance;
+    private String userRole;
     private String password;
     private String token;
-    private Integer gold_status;
-    private Integer silver_status;
-    private Double incrice;
+    private Integer goldStatus;
+    private Integer silverStatus;
+    private Double increase;
     private String activationCode;
 
     public Users() {
     }
 
-    public Users(String name, String email, Double silver_balance, Double gold_balance, String user_role, String password, String token, Integer gold_status, Integer silver_status, Double incrice) {
+    public Users(String name, String email, Double silverBalance, Double goldBalance, String userRole, String password, String token, Integer goldStatus, Integer silverStatus, Double increase) {
         this.name = name;
         this.email = email;
-        this.silver_balance = silver_balance;
-        this.gold_balance = gold_balance;
-        this.user_role = user_role;
+        this.silverBalance = silverBalance;
+        this.goldBalance = goldBalance;
+        this.userRole = userRole;
         this.password = password;
         this.token = token;
-        this.gold_status = gold_status;
-        this.silver_status = silver_status;
-        this.incrice = incrice;
+        this.goldStatus = goldStatus;
+        this.silverStatus = silverStatus;
+        this.increase = increase;
     }
 
     public String getActivationCode() {
@@ -70,28 +70,28 @@ public class Users implements Comparable<Users> {
         this.email = email;
     }
 
-    public Double getSilver_balance() {
-        return silver_balance;
+    public Double getsilverBalance() {
+        return silverBalance;
     }
 
-    public void setSilver_balance(Double silver_balance) {
-        this.silver_balance = silver_balance;
+    public void setsilverBalance(Double silverBalance) {
+        this.silverBalance = silverBalance;
     }
 
-    public Double getGold_balance() {
-        return gold_balance;
+    public Double getgoldBalance() {
+        return goldBalance;
     }
 
-    public void setGold_balance(Double gold_balance) {
-        this.gold_balance = gold_balance;
+    public void setgoldBalance(Double goldBalance) {
+        this.goldBalance = goldBalance;
     }
 
-    public String getUser_role() {
-        return user_role;
+    public String getuserRole() {
+        return userRole;
     }
 
-    public void setUser_role(String user_role) {
-        this.user_role = user_role;
+    public void setuserRole(String userRole) {
+        this.userRole = userRole;
     }
 
     public String getPassword() {
@@ -110,32 +110,32 @@ public class Users implements Comparable<Users> {
         this.token = token;
     }
 
-    public Integer getGold_status() {
-        return gold_status;
+    public Integer getgoldStatus() {
+        return goldStatus;
     }
 
-    public void setGold_status(Integer gold_status) {
-        this.gold_status = gold_status;
+    public void setgoldStatus(Integer goldStatus) {
+        this.goldStatus = goldStatus;
     }
 
-    public Integer getSilver_status() {
-        return silver_status;
+    public Integer getsilverStatus() {
+        return silverStatus;
     }
 
-    public void setSilver_status(Integer silver_status) {
-        this.silver_status = silver_status;
+    public void setsilverStatus(Integer silverStatus) {
+        this.silverStatus = silverStatus;
     }
 
-    public Double getIncrice() {
-        return incrice;
+    public Double getincrease() {
+        return increase;
     }
 
-    public void setIncrice(Double incrice) {
-        this.incrice = incrice;
+    public void setincrease(Double increase) {
+        this.increase = increase;
     }
 
     @Override
     public int compareTo(Users o) {
-        return o.silver_balance.compareTo(silver_balance);
+        return o.silverBalance.compareTo(silverBalance);
     }
 }

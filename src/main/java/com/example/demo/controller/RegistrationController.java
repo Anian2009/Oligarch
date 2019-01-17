@@ -16,11 +16,15 @@ import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 @RestController
 public class RegistrationController {
 
-    @Autowired
-    private UsersRepository usersRepository;
+    private final UsersRepository usersRepository;
+
+    private final MailSender mailSender;
 
     @Autowired
-    public MailSender mailSender;
+    public RegistrationController(UsersRepository usersRepository, MailSender mailSender) {
+        this.usersRepository = usersRepository;
+        this.mailSender = mailSender;
+    }
 
     @PostMapping("/api/guest/log-in")
     public Map<String, Object> login(@RequestBody Map<String, String> body) {
@@ -32,7 +36,7 @@ public class RegistrationController {
             if (user.getActivationCode().equals("true")) {
                 response.put("message", user.getToken());
                 response.put("id", user.getId());
-                response.put("role", user.getUser_role());
+                response.put("role", user.getuserRole());
                 response.put("email", user.getEmail());
             } else
                 response.put("message", "AbortCode");

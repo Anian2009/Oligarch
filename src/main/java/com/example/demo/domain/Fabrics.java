@@ -12,25 +12,25 @@ public class Fabrics {
     private Integer id;
 
     private Double price;
-    private String fabric_name;
-    private Double upgrad;
-    private Double mining_p_s;
+    private String fabricName;
+    private Double upgrade;
+    private Double miningPerSecond;
     private String img;
 
     public Fabrics() {}
 
-    public Fabrics(Double price, String fabric_name, Double upgrad, Double mining_p_s) {
+    public Fabrics(Double price, String fabricName, Double upgrade, Double miningPerSecond) {
         this.price = price;
-        this.fabric_name = fabric_name;
-        this.upgrad = upgrad;
-        this.mining_p_s = mining_p_s;
+        this.fabricName = fabricName;
+        this.upgrade = upgrade;
+        this.miningPerSecond = miningPerSecond;
     }
 
-    public Fabrics(Double price, String fabric_name, Double upgrad, Double mining_p_s, String img) {
+    public Fabrics(Double price, String fabricName, Double upgrade, Double miningPerSecond, String img) {
         this.price = price;
-        this.fabric_name = fabric_name;
-        this.upgrad = upgrad;
-        this.mining_p_s = mining_p_s;
+        this.fabricName = fabricName;
+        this.upgrade = upgrade;
+        this.miningPerSecond = miningPerSecond;
         this.img = img;
     }
 
@@ -58,28 +58,28 @@ public class Fabrics {
         this.price = price;
     }
 
-    public String getFabric_name() {
-        return fabric_name;
+    public String getfabricName() {
+        return fabricName;
     }
 
-    public void setFabric_name(String fabric_name) {
-        this.fabric_name = fabric_name;
+    public void setfabricName(String fabricName) {
+        this.fabricName = fabricName;
     }
 
-    public Double getUpgrad() {
-        return upgrad;
+    public Double getupgrade() {
+        return upgrade;
     }
 
-    public void setUpgrad(Double upgrad) {
-        this.upgrad = upgrad;
+    public void setupgrade(Double upgrade) {
+        this.upgrade = upgrade;
     }
 
-    public Double getMining_p_s() {
-        return mining_p_s;
+    public Double getminingPerSecond() {
+        return miningPerSecond;
     }
 
-    public void setMining_p_s(Double mining_p_s) {
-        this.mining_p_s = mining_p_s;
+    public void setminingPerSecond(Double miningPerSecond) {
+        this.miningPerSecond = miningPerSecond;
     }
 
 }

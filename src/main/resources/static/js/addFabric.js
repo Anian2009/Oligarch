@@ -7,10 +7,10 @@ $(document).ready(function () {
         data.fabrics.forEach(function (item) {
             var emploee_data = '';
             emploee_data += '<tr>';
-            emploee_data += '<td>' + item.fabric_name + '</td>';
+            emploee_data += '<td>' + item.fabricName + '</td>';
             emploee_data += '<td>' + item.price + '</td>';
-            emploee_data += '<td>' + item.upgrad + '</td>';
-            emploee_data += '<td>' + item.mining_p_s + '</td>';
+            emploee_data += '<td>' + item.upgrade + '</td>';
+            emploee_data += '<td>' + item.miningPerSecond + '</td>';
             emploee_data += '</tr>';
             $('#emploe_table').append(emploee_data);
         })
@@ -93,7 +93,7 @@ $(document).ready(function () {
                 alert("FUCK!!!");
             }
         });
-    })
+    });
 
     $(document).on('click', 'img[name^="im"]', function (e) {
         e.preventDefault();
