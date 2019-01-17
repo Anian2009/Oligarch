@@ -6,6 +6,16 @@ import javax.persistence.*;
 @Table(name = "users")
 public class Users implements Comparable<Users> {
 
+    private final static Integer HAVE_STATUS = 1;
+
+    private final static Integer HAVE_NO_STATUS = 0;
+
+    private final static Double START_BALANCE = 0.0;
+
+    private final static Double START_INCREASE = 0.00001;
+
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -36,6 +46,19 @@ public class Users implements Comparable<Users> {
         this.goldStatus = goldStatus;
         this.silverStatus = silverStatus;
         this.increase = increase;
+    }
+
+    public Users(String name, String email, String role, String password, String token) {
+        this.name = name;
+        this.email = email;
+        this.silverBalance = START_BALANCE;
+        this.goldBalance = START_BALANCE;
+        this.userRole = role;
+        this.password = password;
+        this.token = token;
+        this.goldStatus = HAVE_NO_STATUS;
+        this.silverStatus = HAVE_STATUS;
+        this.increase = START_INCREASE;
     }
 
     public String getActivationCode() {

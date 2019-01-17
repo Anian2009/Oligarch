@@ -32,26 +32,26 @@ $(document).ready(function () {
     $('#add_fabric').click(function () {
         var p, n, u, m, i;
 
-        if ((p = $('#new_price').val()) === null || p === "") {
+        if ((p = $('#new_price').val()) === null || p.replace(/\s+/g, '') === "") {
             alert("Any factory is worth something!");
             return false;
         }
 
-        if ((n = $('#new_name').val()) === null || n === "") {
+        if ((n = $('#new_name').val()) === null || n.replace(/\s+/g, '') === "") {
             alert("How do you call the plant - so it will work.");
             return false
         }
-        if ((u = $('#new_upgrad').val()) === null || u === "") {
+        if ((u = $('#new_upgrad').val()) === null || u.replace(/\s+/g, '') === "") {
             alert("Any equipment worth the money.");
             return false
         }
 
-        if ((m = $('#new_mining').val()) === null || m === "") {
+        if ((m = $('#new_mining').val()) === null || m.replace(/\s+/g, '') === "") {
             alert("Why do we need the plant - which does not make a profit?");
             return false
         }
 
-        if ((i = $('#new_image').val()) === null || i === "") {
+        if ((i = $('#new_image').val()) === null || i.replace(/\s+/g, '') === "") {
             alert("Selected a factory photo.");
             return false
         }

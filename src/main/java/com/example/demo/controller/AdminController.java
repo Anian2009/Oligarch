@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,7 +25,7 @@ public class AdminController {
     @GetMapping("api/admin/factory-list")
     public Map<String, Object> factoryMarketList() {
         Map<String, Object> response = new HashMap<>();
-        Iterable<Fabrics> fabrics = fabricsRepository.findAll();
+        List<Fabrics> fabrics = fabricsRepository.findAll();
         response.put("fabrics", fabrics);
         return response;
     }

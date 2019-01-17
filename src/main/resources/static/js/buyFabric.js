@@ -33,7 +33,7 @@ $(document).ready(function () {
                 usersInafo(data.users)
             },
             error: function (jqXHR) {
-                console.log(jqXHR.toString());
+                console.log(jqXHR.status);
             }
         });
     };

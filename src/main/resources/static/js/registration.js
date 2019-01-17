@@ -26,15 +26,10 @@ $(document).ready(function () {
                 password: pas
             }),
             success: function (data) {
-                if (data.message === "Abort") {
-                    alert("This name already exists.");
-                    $('#InputName').val("");
-                } else {
-                    window.location = "../message.html";
-                }
+                window.location = "../message.html";
             },
             error: function (jqXHR) {
-                alert("FUCK!!!");
+                alert("This email already exists.");
             }
         })
     });
