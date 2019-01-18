@@ -5,6 +5,7 @@ import com.example.demo.domain.Users;
 import com.example.demo.repository.UsersRepository;
 import com.example.demo.service.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,14 @@ import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 @RestController
 public class RegistrationController {
 
+    @Value("${exchange.rateGold}")
+    private Integer rateGold;
+
+    @Value("${exchange.rateSilver}")
+    private Integer rateSilver;
+
+    @Value("${stripe.price}")
+    private Integer price;
     private final UsersRepository usersRepository;
 
     private final MailSender mailSender;
@@ -40,6 +49,9 @@ public class RegistrationController {
                 response.put("id", user.getId());
                 response.put("role", user.getuserRole());
                 response.put("email", user.getEmail());
+                response.put("price", price);
+                response.put("rateGold", rateGold);
+                response.put("rateSilver", rateSilver);
             } else
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }

@@ -37,9 +37,6 @@ public class DashboardController {
     @Value("${stripe.description}")
     private String description;
 
-    @Value("${exchange.rateGold}")
-    private Integer rateGold;
-
     private final static Integer UNO_LEVEL_MOR = 1;
 
     private final static Integer HAVE_STATUS = 1;
@@ -153,13 +150,16 @@ public class DashboardController {
     }
 
     @GetMapping("api/user/exchange")
-    public ResponseEntity<Map<String, Object>> exchange(@RequestParam Map<String, Object> request) {
-        int coins = Integer.parseInt(request.get("coins").toString());
+    public ResponseEntity<Map<String, Object>> exchangeGold(@RequestParam Map<String, Object> request) {
+        System.out.println("mySilverCoins="+request.get("mySilverCoins"));
+        System.out.println("myGoldCoins="+request.get("myGoldCoins"));
+        double mySilverCoins = Double.parseDouble(request.get("mySilverCoins").toString());
+        double myGoldCoins = Double.parseDouble(request.get("myGoldCoins").toString());
         Users user = usersRepository.findById(Integer.parseInt(request.get("id").toString()));
         if (user == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        user.setgoldBalance(user.getgoldBalance() - coins);
-        user.setsilverBalance(user.getsilverBalance() + (coins * rateGold));
+        user.setgoldBalance(user.getgoldBalance() + myGoldCoins);
+        user.setsilverBalance(user.getsilverBalance() + mySilverCoins);
         usersRepository.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }

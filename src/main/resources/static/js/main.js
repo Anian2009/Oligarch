@@ -3,6 +3,7 @@ $(document).ready(function () {
     console.log("Hello main.js");
 
     let goldCoins;
+    let silverCoins;
 
     let userInafo = function (data) {
         document.getElementById('userName').innerHTML = '<text>' + data.name + ':</text>';
@@ -10,6 +11,7 @@ $(document).ready(function () {
         document.getElementById('goldBal').innerHTML = '<text>Gold balance - ' + data.goldBalance + ';</text>';
         document.getElementById('increase').innerHTML = '<text>Increase per second - ' + data.increase + ';</text>';
         goldCoins = Math.trunc(data.goldBalance);
+        silverCoins = Math.trunc(data.silverBalance);
     };
 
     let usersInafo = function (data) {
@@ -36,7 +38,7 @@ $(document).ready(function () {
                 usersInafo(data.users)
             },
             error: function (jqXHR) {
-                alert(jqXHR.status + " : "+jqXHR.statusText);
+                console.log(jqXHR.status + " : "+jqXHR.statusText);
             }
         });
     };
@@ -97,7 +99,7 @@ $(document).ready(function () {
             usersInafo(data.users);
         },
         error: function (jqXHR){
-          alert(jqXHR.status+" "+jqXHR.responseText);
+          console.log(jqXHR.status+" "+jqXHR.responseText);
         },
     });
 
@@ -140,7 +142,7 @@ $(document).ready(function () {
             name: "Anian",//sessionStorage.getItem("username"),
             email: sessionStorage.getItem("email"),
             description: 'Gold status',
-            amount: 2000,
+            amount: +sessionStorage.getItem("price"),
         });
         e.preventDefault();
     });
@@ -154,28 +156,59 @@ $(document).ready(function () {
         getUsersInfo();
     }, 1000);
 
-    $('#gold').change(function () {
-        if ($('#gold').val() > goldCoins) {
+    $('#goldSellGold').change(function () {
+        if ($('#goldSellGold').val() > goldCoins) {
             alert("You're not as rich as you want.");
-            $('#gold').val(goldCoins);
+            $('#goldSellGold').val(goldCoins);
         }
-        $('#silver').val($('#gold').val() * 100);
+        $('#silverSellGold').val($('#goldSellGold').val() * sessionStorage.getItem("rateGold"));
     });
 
-    $('#exchange').click(function () {
+    $('#silverBuyGold').change(function () {
+        if ($('#silverBuyGold').val() > silverCoins) {
+            alert("You're not as rich as you want.");
+            $('#silverBuyGold').val(silverCoins);
+        }
+        $('#goldBuyGold').val($('#silverBuyGold').val() / sessionStorage.getItem("rateSilver"));
+    });
+
+    $('#exchangeSellGold').click(function () {
         $.ajax('/api/user/exchange', {
             type: 'GET',
             dataType: 'json',
             contentType: 'application/json',
             headers: {token: sessionStorage.getItem("token")},
-            data: {coins: $('#gold').val(), id: sessionStorage.getItem("id")},
+            data: {
+                myGoldCoins: - $('#goldSellGold').val(),
+                mySilverCoins: $('#silverSellGold').val(),
+                id: sessionStorage.getItem("id")},
             success: function (data) {
             },
             error: function (jqXHR) {
                 console.log(jqXHR.toString());
             }
         });
-        $('#gold').val(0);
-        $('#silver').val(0);
+        $('#goldSellGold').val(0);
+        $('#silverSellGold').val(0);
+    });
+
+    $('#exchangeBuyGold').click(function () {
+        $.ajax('/api/user/exchange', {
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json',
+            headers: {token: sessionStorage.getItem("token")},
+            data: {
+                mySilverCoins: - $('#silverBuyGold').val(),
+                myGoldCoins: $('#goldBuyGold').val(),
+                id: sessionStorage.getItem("id")},
+            success: function (data) {
+            },
+            error: function (jqXHR) {
+                console.log(jqXHR.toString());
+            }
+        });
+        $('#goldBuyGold').val(0);
+        $('#silverBuyGold').val(0);
     });
 });

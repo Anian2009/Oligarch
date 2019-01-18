@@ -15,6 +15,9 @@ $(document).ready(function () {
                 sessionStorage.setItem("id", data.id);
                 sessionStorage.setItem("role", data.role);
                 sessionStorage.setItem("email", data.email);
+                sessionStorage.setItem("rateSilver", data.rateSilver);
+                sessionStorage.setItem("rateGold", data.rateGold);
+                sessionStorage.setItem("price", data.price);
                 if (data.role === "ADMIN")
                     window.location = '../admin/addFabric.html';
                 else
