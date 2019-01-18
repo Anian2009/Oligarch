@@ -1,5 +1,7 @@
 package com.example.demo.domain;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,8 +15,6 @@ public class Users implements Comparable<Users> {
     private final static Double START_BALANCE = 0.0;
 
     private final static Double START_INCREASE = 0.00001;
-
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,22 +30,10 @@ public class Users implements Comparable<Users> {
     private Integer goldStatus;
     private Integer silverStatus;
     private Double increase;
+    private Double totalBalance;
     private String activationCode;
 
     public Users() {
-    }
-
-    public Users(String name, String email, Double silverBalance, Double goldBalance, String userRole, String password, String token, Integer goldStatus, Integer silverStatus, Double increase) {
-        this.name = name;
-        this.email = email;
-        this.silverBalance = silverBalance;
-        this.goldBalance = goldBalance;
-        this.userRole = userRole;
-        this.password = password;
-        this.token = token;
-        this.goldStatus = goldStatus;
-        this.silverStatus = silverStatus;
-        this.increase = increase;
     }
 
     public Users(String name, String email, String role, String password, String token) {
@@ -59,6 +47,7 @@ public class Users implements Comparable<Users> {
         this.goldStatus = HAVE_NO_STATUS;
         this.silverStatus = HAVE_STATUS;
         this.increase = START_INCREASE;
+        this.totalBalance = START_BALANCE;
     }
 
     public String getActivationCode() {
@@ -157,8 +146,16 @@ public class Users implements Comparable<Users> {
         this.increase = increase;
     }
 
+    public Double getTotalBalance() {
+        return totalBalance;
+    }
+
+    public void setTotalBalance(Double totalBalance) {
+        this.totalBalance = totalBalance;
+    }
+
     @Override
     public int compareTo(Users o) {
-        return o.silverBalance.compareTo(silverBalance);
+        return o.totalBalance.compareTo(totalBalance);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -27,6 +28,7 @@ public class RegistrationController {
 
     @Value("${stripe.price}")
     private Integer price;
+
     private final UsersRepository usersRepository;
 
     private final MailSender mailSender;
@@ -37,36 +39,45 @@ public class RegistrationController {
         this.mailSender = mailSender;
     }
 
+//    //private BCryptPasswordEncoder bcryptEncoder;
+//
+//    @Autowired
+//    public setBcryptEncoder(BCryptPasswordEncoder bcryptEncoder) {
+//        this.bcryptEncoder = bcryptEncoder;
+//    }
+
     @PostMapping("/api/guest/log-in")
     public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> body) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         Map<String, Object> response = new HashMap<>();
-        Users user = usersRepository.findByNameAndPassword(body.get("name"), md5Hex(body.get("password")));
-        if (user == null) {
+        Users user = usersRepository.findByEmail(body.get("name"));
+        if (user == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            if (user.getActivationCode().equals("true")) {
-                response.put("message", user.getToken());
-                response.put("id", user.getId());
-                response.put("role", user.getuserRole());
-                response.put("email", user.getEmail());
-                response.put("price", price);
-                response.put("rateGold", rateGold);
-                response.put("rateSilver", rateSilver);
-            } else
-                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
+        if (!user.getActivationCode().equals("true"))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        if (!bCryptPasswordEncoder.matches(body.get("password"),user.getPassword()))
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        response.put("message", user.getToken());
+        response.put("id", user.getId());
+        response.put("role", user.getuserRole());
+        response.put("email", user.getEmail());
+        response.put("price", price);
+        response.put("rateGold", rateGold);
+        response.put("rateSilver", rateSilver);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/api/guest/registration")
     public ResponseEntity<Map<String, Object>> addUser(@RequestBody Map<String, String> body) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(4);
         Map<String, Object> response = new HashMap<>();
         if (usersRepository.findByEmail(body.get("email")) == null) {
             Users user = new Users(
                     body.get("name"),
                     body.get("email").toLowerCase(),
                     RoleType.USER.toString(),
-                    md5Hex(body.get("password")),
+                    bCryptPasswordEncoder.encode(body.get("password")),
                     md5Hex(body.get("password") + body.get("name")));
             user.setActivationCode(UUID.randomUUID().toString());
             usersRepository.save(user);
