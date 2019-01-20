@@ -80,7 +80,7 @@ public class RegistrationController {
                             "To complete registration, please follow the link.: - http://localhost:8080/activation.html?code=%s",
                     user.getName(), user.getActivationCode());
             mailSender.send(user.getEmail(), "Activation code", message);
-            response.put("name", usersRepository.findByEmail(body.get("email")).getName());
+            response.put("name", body.get("name"));
             return new ResponseEntity<>(response,HttpStatus.CREATED);
         } else
         return new ResponseEntity<>(HttpStatus.LOCKED);
