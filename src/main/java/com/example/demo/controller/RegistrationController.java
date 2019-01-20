@@ -39,13 +39,6 @@ public class RegistrationController {
         this.mailSender = mailSender;
     }
 
-//    //private BCryptPasswordEncoder bcryptEncoder;
-//
-//    @Autowired
-//    public setBcryptEncoder(BCryptPasswordEncoder bcryptEncoder) {
-//        this.bcryptEncoder = bcryptEncoder;
-//    }
-
     @PostMapping("/api/guest/log-in")
     public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> body) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -55,7 +48,6 @@ public class RegistrationController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         if (!user.getActivationCode().equals("true"))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-
         if (!bCryptPasswordEncoder.matches(body.get("password"),user.getPassword()))
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         response.put("message", user.getToken());
@@ -88,7 +80,7 @@ public class RegistrationController {
                             "To complete registration, please follow the link.: - http://localhost:8080/activation.html?code=%s",
                     user.getName(), user.getActivationCode());
             mailSender.send(user.getEmail(), "Activation code", message);
-            response.put("name", user.getName());
+            response.put("name", usersRepository.findByEmail(body.get("email")).getName());
             return new ResponseEntity<>(response,HttpStatus.CREATED);
         } else
         return new ResponseEntity<>(HttpStatus.LOCKED);
