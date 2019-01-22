@@ -14,6 +14,10 @@ import org.springframework.context.annotation.Configuration;
 public class Pac4jConfig {
     private static final String HEADER_TOKEN_NAME = "token";
 
+    public static String getHeaderTokenName() {
+        return HEADER_TOKEN_NAME;
+    }
+
     private final UsersRepository usersRepository;
 
     @Autowired
