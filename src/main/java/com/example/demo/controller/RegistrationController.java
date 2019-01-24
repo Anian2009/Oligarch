@@ -61,7 +61,7 @@ public class RegistrationController {
         }
         response.put("message", user.getToken());
         response.put("id", user.getId());
-        response.put("role", user.getuserRole());
+        response.put("role", user.getUserRole());
         response.put("email", user.getEmail());
         response.put("price", price);
         response.put("rateGold", rateGold);

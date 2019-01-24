@@ -82,27 +82,27 @@ public class Users /* implements Comparable<Users> */{
         this.email = email;
     }
 
-    public Double getsilverBalance() {
+    public Double getSilverBalance() {
         return silverBalance;
     }
 
-    public void setsilverBalance(Double silverBalance) {
+    public void setSilverBalance(Double silverBalance) {
         this.silverBalance = silverBalance;
     }
 
-    public Double getgoldBalance() {
+    public Double getGoldBalance() {
         return goldBalance;
     }
 
-    public void setgoldBalance(Double goldBalance) {
+    public void setGoldBalance(Double goldBalance) {
         this.goldBalance = goldBalance;
     }
 
-    public String getuserRole() {
+    public String getUserRole() {
         return userRole;
     }
 
-    public void setuserRole(String userRole) {
+    public void setUserRole(String userRole) {
         this.userRole = userRole;
     }
 
@@ -122,27 +122,27 @@ public class Users /* implements Comparable<Users> */{
         this.token = token;
     }
 
-    public Integer getgoldStatus() {
+    public Integer getGoldStatus() {
         return goldStatus;
     }
 
-    public void setgoldStatus(Integer goldStatus) {
+    public void setGoldStatus(Integer goldStatus) {
         this.goldStatus = goldStatus;
     }
 
-    public Integer getsilverStatus() {
+    public Integer getSilverStatus() {
         return silverStatus;
     }
 
-    public void setsilverStatus(Integer silverStatus) {
+    public void setSilverStatus(Integer silverStatus) {
         this.silverStatus = silverStatus;
     }
 
-    public Double getincrease() {
+    public Double getIncrease() {
         return increase;
     }
 
-    public void setincrease(Double increase) {
+    public void setIncrease(Double increase) {
         this.increase = increase;
     }
 
@@ -155,8 +155,8 @@ public class Users /* implements Comparable<Users> */{
     }
 
     public Users changeStatus() {
-        setgoldStatus(HAVE_STATUS);
-        setsilverStatus(HAVE_NO_STATUS);
+        setGoldStatus(HAVE_STATUS);
+        setSilverStatus(HAVE_NO_STATUS);
         return this;
     }
 }

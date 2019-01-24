@@ -1,16 +1,10 @@
 package com.example.demo.domain;
 
-import com.example.demo.repository.UserFabricsRepository;
-import com.example.demo.repository.UsersRepository;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "user_fabrics_info")
 public class UserFabrics {
-
-
-
 
     private static final Integer START_LEVEL = 1;
 
@@ -73,20 +67,27 @@ public class UserFabrics {
         this.fabric = fabric;
     }
 
-    public Integer getfabricLevel() {
+    public Integer getFabricLevel() {
         return fabricLevel;
     }
 
-    public void setfabricLevel(Integer fabricLevel) {
+    public void setFabricLevel(Integer fabricLevel) {
         this.fabricLevel = fabricLevel;
     }
 
-    public Double getminingPerSecond() {
+    public Double getMiningPerSecond() {
         return miningPerSecond;
     }
 
-    public void setminingPerSecond(Double miningPerSecond) {
+    public void setMiningPerSecond(Double miningPerSecond) {
         this.miningPerSecond = miningPerSecond;
     }
 
+    public UserFabrics update() {
+        master.setIncrease(master.getIncrease()+miningPerSecond);
+        setMiningPerSecond(getMiningPerSecond()+miningPerSecond);
+        fabricLevel++;
+        master.setSilverBalance(master.getSilverBalance()-fabric.getUpgrade());
+        return this;
+    }
 }

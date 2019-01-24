@@ -35,12 +35,6 @@ public class DashboardController {
     @Value("${stripe.description}")
     private String description;
 
-    private final static Integer UNO_LEVEL_MOR = 1;
-
-    private final static Integer HAVE_STATUS = 1;
-
-    private final static Integer HAVE_NO_STATUS = 0;
-
     private final FabricsRepository fabricsRepository;
 
     private final UserFabricsRepository userFabricsRepository;
@@ -92,15 +86,15 @@ public class DashboardController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Such a user does not exist in the database.");
         }
-        if (user.getsilverBalance() < fabric.getPrice()){
+        if (user.getSilverBalance() < fabric.getPrice()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "The user lacks money.");
         }
         else {
-            UserFabrics userFabric = new UserFabrics(user, fabric, fabric.getminingPerSecond());
+            UserFabrics userFabric = new UserFabrics(user, fabric, fabric.getMiningPerSecond());
             userFabricsRepository.save(userFabric);
-            user.setincrease(user.getincrease() + fabric.getminingPerSecond());
-            user.setsilverBalance(user.getsilverBalance() - fabric.getPrice());
+            user.setIncrease(user.getIncrease() + fabric.getMiningPerSecond());
+            user.setSilverBalance(user.getSilverBalance() - fabric.getPrice());
             usersRepository.save(user);
         }
         response.put("message", "OK");
@@ -108,7 +102,7 @@ public class DashboardController {
     }
 
     @PutMapping("api/user/upgrade-factory/{id}")
-    public ResponseEntity<Map<String, Object>> upgrade(@PathVariable Integer id/*@RequestParam Integer id*/) {
+    public ResponseEntity<Map<String, Object>> upgrade(@PathVariable Integer id) {
         Map<String, Object> response = new HashMap<>();
         UserFabrics fabric = userFabricsRepository.findById(id);
         Users user = fabric.getMaster();
@@ -116,17 +110,12 @@ public class DashboardController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Such a user does not exist in the database.");
         }
-        if (user.getsilverBalance() < fabric.getFabric().getupgrade()){
+        if (user.getSilverBalance() < fabric.getFabric().getUpgrade()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "The user does not have enough money to complete the operation.");
         }
         else {
-            user.setincrease(user.getincrease() + fabric.getminingPerSecond());
-            fabric.setminingPerSecond(fabric.getminingPerSecond() + fabric.getminingPerSecond());
-            fabric.setfabricLevel(fabric.getfabricLevel()+UNO_LEVEL_MOR);
-            user.setsilverBalance(user.getsilverBalance() - fabric.getFabric().getupgrade());
-            usersRepository.save(user);
-            userFabricsRepository.save(fabric);
+            userFabricsRepository.save(fabric.update());
             List<UserFabrics> fabrics = userFabricsRepository.findByMaster(user);
             response.put("fabrics", fabrics);
             response.put("message", "OK");
@@ -172,18 +161,18 @@ public class DashboardController {
                     "Such a user does not exist in the database.");
         }
         if (myGoldCoins<0){
-            if (Math.abs(myGoldCoins)>user.getgoldBalance()){
+            if (Math.abs(myGoldCoins)>user.getGoldBalance()){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "The user does not have the amount specified in the account.");
             }
         }else{
-            if (Math.abs(mySilverCoins)>user.getsilverBalance()){
+            if (Math.abs(mySilverCoins)>user.getSilverBalance()){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "The user does not have the amount specified in the account.");
             }
         }
-        user.setgoldBalance(user.getgoldBalance() + myGoldCoins);
-        user.setsilverBalance(user.getsilverBalance() + mySilverCoins);
+        user.setGoldBalance(user.getGoldBalance() + myGoldCoins);
+        user.setSilverBalance(user.getSilverBalance() + mySilverCoins);
         usersRepository.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }

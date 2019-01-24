@@ -21,7 +21,7 @@ public class TokenAuthenticator implements Authenticator<TokenCredentials> {
         Users user = usersRepository.findByToken(credentials.getToken());
         if (user != null) {
             CommonProfile profile = new CommonProfile();
-            profile.addRole(user.getuserRole());
+            profile.addRole(user.getUserRole());
             credentials.setUserProfile(profile);
         }
     }

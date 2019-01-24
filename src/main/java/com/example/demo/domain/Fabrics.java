@@ -58,27 +58,27 @@ public class Fabrics {
         this.price = price;
     }
 
-    public String getfabricName() {
+    public String getFabricName() {
         return fabricName;
     }
 
-    public void setfabricName(String fabricName) {
+    public void setFabricName(String fabricName) {
         this.fabricName = fabricName;
     }
 
-    public Double getupgrade() {
+    public Double getUpgrade() {
         return upgrade;
     }
 
-    public void setupgrade(Double upgrade) {
+    public void setUpgrade(Double upgrade) {
         this.upgrade = upgrade;
     }
 
-    public Double getminingPerSecond() {
+    public Double getMiningPerSecond() {
         return miningPerSecond;
     }
 
-    public void setminingPerSecond(Double miningPerSecond) {
+    public void setMiningPerSecond(Double miningPerSecond) {
         this.miningPerSecond = miningPerSecond;
     }
 
