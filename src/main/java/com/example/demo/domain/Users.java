@@ -154,8 +154,9 @@ public class Users /* implements Comparable<Users> */{
         this.totalBalance = totalBalance;
     }
 
-//    @Override
-//    public int compareTo(Users o) {
-//        return o.totalBalance.compareTo(totalBalance);
-//    }
+    public Users changeStatus() {
+        setgoldStatus(HAVE_STATUS);
+        setsilverStatus(HAVE_NO_STATUS);
+        return this;
+    }
 }

@@ -146,19 +146,20 @@ public class DashboardController {
         params.put("source", token);
         try {
             Charge charge = Charge.create(params);
-            System.out.println(charge.getStatus());
             if (charge.getStatus().equals("succeeded")) {
                 Users user = usersRepository.findById(Integer.parseInt(request.get("id").toString()));
-                user.setsilverStatus(HAVE_NO_STATUS);
-                user.setgoldStatus(HAVE_STATUS);
-                usersRepository.save(user);
+                usersRepository.save(user.changeStatus());
                 response.put("message", "Ok");
-            } else
-                return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else{
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        charge.getStatus()+ " Payment failed.");
+            }
         } catch (StripeException e) {
-            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    e.getMessage());
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 
     @GetMapping("api/user/exchange")
