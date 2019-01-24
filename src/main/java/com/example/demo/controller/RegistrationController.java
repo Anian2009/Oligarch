@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.EmailValidator;
 import com.example.demo.domain.RoleType;
 import com.example.demo.domain.Users;
 import com.example.demo.repository.UsersRepository;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSendException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -71,22 +73,37 @@ public class RegistrationController {
     public ResponseEntity<Map<String, Object>> addUser(@RequestBody Map<String, String> body) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(4);
         Map<String, Object> response = new HashMap<>();
+
+        if (!new EmailValidator().validate(body.get("email"))){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "E-mail incorrectly written.");
+        }
         if (usersRepository.findByEmail(body.get("email")) == null) {
+
+            String activationCode = UUID.randomUUID().toString();
+            String message = String.format(
+                    "Hello %s! \n" +
+                            "Welcome to 'Oligarch'. " +
+                            "\n" +
+                            "To complete registration, please follow the link.: - http://localhost:8080/activation.html?code=%s",
+                    body.get("name"), activationCode);
+            try {
+                mailSender.send(body.get("email"), "Activation code", message);
+            } catch (MailSendException ex){
+                System.out.println(ex.getMessage());
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        body.get("email")+" - Account was suspended due to inactivity");
+            }
+
             Users user = new Users(
                     body.get("name"),
                     body.get("email").toLowerCase(),
                     RoleType.USER.toString(),
                     bCryptPasswordEncoder.encode(body.get("password")),
                     md5Hex(body.get("password") + body.get("name")));
-            user.setActivationCode(UUID.randomUUID().toString());
+            user.setActivationCode(activationCode);
             usersRepository.save(user);
-            String message = String.format(
-                    "Hello %s! \n" +
-                            "Welcome to 'Oligarch'. " +
-                            "\n" +
-                            "To complete registration, please follow the link.: - http://localhost:8080/activation.html?code=%s",
-                    user.getName(), user.getActivationCode());
-            mailSender.send(user.getEmail(), "Activation code", message);
+
             response.put("name", body.get("name"));
             return new ResponseEntity<>(response,HttpStatus.OK);
         } else{
