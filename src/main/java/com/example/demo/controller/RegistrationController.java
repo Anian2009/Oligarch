@@ -40,11 +40,11 @@ public class RegistrationController {
         this.mailSender = mailSender;
     }
 
-    @PostMapping("/api/guest/log-in")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> body){
+    @GetMapping("/api/guest/log-in")
+    public ResponseEntity<Map<String, Object>> login(@RequestParam String email, @RequestParam String password){
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         Map<String, Object> response = new HashMap<>();
-        Users user = usersRepository.findByEmail(body.get("email"));
+        Users user = usersRepository.findByEmail(email);
         if (user == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "User with this email not found in DB");
@@ -53,7 +53,7 @@ public class RegistrationController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "User has not completed registration. Check your email and follow the instructions.");
         }
-        if (!bCryptPasswordEncoder.matches(body.get("password"),user.getPassword())){
+        if (!bCryptPasswordEncoder.matches(password,user.getPassword())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Password is incorrect.");
         }
@@ -95,8 +95,8 @@ public class RegistrationController {
         }
     }
 
-    @GetMapping("activation-code")
-    public ResponseEntity<Map<String, Object>> activationCode(@RequestParam String code) {
+    @PutMapping("activation-code/{code}")
+    public ResponseEntity<Map<String, Object>> activationCode(@PathVariable String code/* */) {
         Map<String, Object> response = new HashMap<>();
         Users user = usersRepository.findByActivationCode(code);
         if (user != null) {

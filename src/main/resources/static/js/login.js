@@ -3,13 +3,13 @@ $(document).ready(function () {
 
     $('#login').click(function () {
         $.ajax("/api/guest/log-in", {
-            type: 'POST',
+            type: 'GET',
             dataType: 'json',
             contentType: 'application/json',
-            data: JSON.stringify({
+            data: {
                 email: $('#lInputEmail').val(),
                 password: $('#lInputPassword').val()
-            }),
+            },
             success: function (data) {
                 sessionStorage.setItem("token", data.message);
                 sessionStorage.setItem("id", data.id);

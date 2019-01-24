@@ -3,15 +3,13 @@ $(document).ready(function () {
     console.log("Hello main.js");
 
     function upgradeThisFabric(id) {
-        $.ajax('/api/user/upgrade-factory', {
-            type: 'GET',
+        $.ajax('/api/user/upgrade-factory/'+id, {
+            type: 'PUT',
             dataType: 'json',
             contentType: 'application/json',
             headers: {token: sessionStorage.getItem("token")},
-            data: {id: id},
             success: function (data) {
                 showMyFabric(data.fabrics);
-                userInafo(data.fabrics[0].master);
                 alert("Congratulations! You upgraded the plant. Your profit is increasing.");
             },
             error: function (jqXHR) {

@@ -13,12 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,11 +79,11 @@ public class DashboardController {
         return response;
     }
 
-    @GetMapping("api/user/buy-factory")
-    public ResponseEntity<Map<String, Object>> bayFabric(@RequestParam Integer id, @RequestParam Integer userID) {
+    @PostMapping("api/user/buy-factory")
+    public ResponseEntity<Map<String, Object>> bayFabric(@RequestBody Map<String,Object> body /*Integer id, @RequestParam Integer userID*/) {
         Map<String, Object> response = new HashMap<>();
-        Users user = usersRepository.findById(userID);
-        Fabrics fabric = fabricsRepository.findById(id);
+        Users user = usersRepository.findById(Integer.parseInt(body.get("userID").toString()));
+        Fabrics fabric = fabricsRepository.findById(Integer.parseInt(body.get("id").toString()));
         if (fabric == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Such a plant does not exist in the database.");
@@ -110,8 +107,8 @@ public class DashboardController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/api/user/upgrade-factory")
-    public ResponseEntity<Map<String, Object>> upgrade(@RequestParam Integer id) {
+    @PutMapping("api/user/upgrade-factory/{id}")
+    public ResponseEntity<Map<String, Object>> upgrade(@PathVariable Integer id/*@RequestParam Integer id*/) {
         Map<String, Object> response = new HashMap<>();
         UserFabrics fabric = userFabricsRepository.findById(id);
         Users user = fabric.getMaster();

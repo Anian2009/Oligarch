@@ -31,11 +31,11 @@ $(document).ready(function () {
 
     let buyFabric = function (id) {
         $.ajax('/api/user/buy-factory', {
-            type: 'GET',
+            type: 'POST',
             dataType: 'json',
             contentType: 'application/json',
             headers: {token: sessionStorage.getItem("token")},
-            data: {id: id, userID: sessionStorage.getItem("id")},
+            data: JSON.stringify({id: id, userID: sessionStorage.getItem("id")}),
             success: function (data) {
                 alert("Congratulations! You have become the owner of a new plant. Information about your factories is on the main page.");
             },
