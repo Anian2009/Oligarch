@@ -38,8 +38,8 @@ $(document).ready(function () {
                 usersInafo(data.users)
             },
             error: function (jqXHR) {
-                console.log(jqXHR.status + " : "+jqXHR.statusText);
-            }
+                alert(jqXHR.responseJSON.status +" - "+jqXHR.responseJSON.message);
+            },
         });
     };
 

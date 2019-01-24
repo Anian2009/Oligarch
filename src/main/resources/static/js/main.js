@@ -10,14 +10,13 @@ $(document).ready(function () {
             headers: {token: sessionStorage.getItem("token")},
             data: {id: id},
             success: function (data) {
-                if (data.message === "Abort")
-                    alert("Unfortunately, you do not have the funds to upgrade your factory.");
-                else {
-                    showMyFabric(data.fabrics);
-                    userInafo(data.fabrics[0].master);
-                    alert("Congratulations! You upgraded the plant. Your profit is increasing.");
-                }
-            }
+                showMyFabric(data.fabrics);
+                userInafo(data.fabrics[0].master);
+                alert("Congratulations! You upgraded the plant. Your profit is increasing.");
+            },
+            error: function (jqXHR) {
+                alert(jqXHR.responseJSON.status +" - "+jqXHR.responseJSON.message);
+            },
         })
     }
 
@@ -53,8 +52,8 @@ $(document).ready(function () {
         success: function (data) {
             showMyFabric(data.fabrics);
         },
-        error: function (jqXHR){
-            console.log(jqXHR.status+" "+jqXHR.responseText);
+        error: function (jqXHR) {
+            alert(jqXHR.responseJSON.status +" - "+jqXHR.responseJSON.message);
         },
     });
 
@@ -71,8 +70,8 @@ $(document).ready(function () {
                     "From now all your mining will come in gold coins. " +
                     "At any time, you can exchange gold coins for silver at an advantageous rate.");
             },
-            error: function (jqXHR){
-                alert(jqXHR.status+" "+jqXHR.responseText);
+            error: function (jqXHR) {
+                alert(jqXHR.responseJSON.status +" - "+jqXHR.responseJSON.message);
             },
         });
     }
@@ -131,8 +130,8 @@ $(document).ready(function () {
             success: function (data) {
             },
             error: function (jqXHR) {
-                console.log(jqXHR.toString());
-            }
+                alert(jqXHR.responseJSON.status +" - "+jqXHR.responseJSON.message);
+            },
         });
         $('#goldSellGold').val(0);
         $('#silverSellGold').val(0);
@@ -151,8 +150,8 @@ $(document).ready(function () {
             success: function (data) {
             },
             error: function (jqXHR) {
-                console.log(jqXHR.toString());
-            }
+                alert(jqXHR.responseJSON.status +" - "+jqXHR.responseJSON.message);
+            },
         });
         $('#goldBuyGold').val(0);
         $('#silverBuyGold').val(0);

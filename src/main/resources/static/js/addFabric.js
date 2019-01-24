@@ -87,9 +87,9 @@ $(document).ready(function () {
                 $('#new_mining').val("");
 
             },
-            error: function () {
-                alert("Data is not sent to the server.");
-            }
+            error: function (jqXHR) {
+                alert(jqXHR.responseJSON.status +" - "+jqXHR.responseJSON.message);
+            },
         });
     });
 

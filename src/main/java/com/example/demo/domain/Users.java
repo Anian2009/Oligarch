@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class Users implements Comparable<Users> {
+public class Users /* implements Comparable<Users> */{
 
     private final static Integer HAVE_STATUS = 1;
 
@@ -154,8 +154,8 @@ public class Users implements Comparable<Users> {
         this.totalBalance = totalBalance;
     }
 
-    @Override
-    public int compareTo(Users o) {
-        return o.totalBalance.compareTo(totalBalance);
-    }
+//    @Override
+//    public int compareTo(Users o) {
+//        return o.totalBalance.compareTo(totalBalance);
+//    }
 }

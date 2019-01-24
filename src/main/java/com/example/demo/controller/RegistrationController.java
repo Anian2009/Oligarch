@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,16 +41,22 @@ public class RegistrationController {
     }
 
     @PostMapping("/api/guest/log-in")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> body) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> body){
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         Map<String, Object> response = new HashMap<>();
-        Users user = usersRepository.findByEmail(body.get("name"));
-        if (user == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        if (!user.getActivationCode().equals("true"))
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        if (!bCryptPasswordEncoder.matches(body.get("password"),user.getPassword()))
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Users user = usersRepository.findByEmail(body.get("email"));
+        if (user == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "User with this email not found in DB");
+        }
+        if (!Boolean.valueOf(user.getActivationCode())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "User has not completed registration. Check your email and follow the instructions.");
+        }
+        if (!bCryptPasswordEncoder.matches(body.get("password"),user.getPassword())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Password is incorrect.");
+        }
         response.put("message", user.getToken());
         response.put("id", user.getId());
         response.put("role", user.getuserRole());
@@ -81,9 +88,11 @@ public class RegistrationController {
                     user.getName(), user.getActivationCode());
             mailSender.send(user.getEmail(), "Activation code", message);
             response.put("name", body.get("name"));
-            return new ResponseEntity<>(response,HttpStatus.CREATED);
-        } else
-        return new ResponseEntity<>(HttpStatus.LOCKED);
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        } else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "A user with such an email already exists");
+        }
     }
 
     @GetMapping("activation-code")
@@ -95,7 +104,9 @@ public class RegistrationController {
             usersRepository.save(user);
             response.put("message","OK");
             return new ResponseEntity<>(response,HttpStatus.OK);
-        }else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "A user with such an activation key was not found in the database.");
+        }
     }
 }

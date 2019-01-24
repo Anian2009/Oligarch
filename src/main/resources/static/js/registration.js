@@ -29,8 +29,8 @@ $(document).ready(function () {
                 window.location = "../message.html";
             },
             error: function (jqXHR) {
-                alert("This email already exists.");
-            }
+                alert(jqXHR.responseJSON.status +" - "+jqXHR.responseJSON.message);
+            },
         })
     });
 

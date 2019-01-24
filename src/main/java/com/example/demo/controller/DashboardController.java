@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -60,11 +61,13 @@ public class DashboardController {
     public ResponseEntity<Map<String, Object>> myFabric(@RequestParam Integer id) {
         Map<String, Object> response = new HashMap<>();
         Users user = usersRepository.findById(id);
-        if (user == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (user == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "The user does not exist with this number in the database.");
+        }
         List<UserFabrics> fabrics = userFabricsRepository.findByMaster(user);
-        List<Users> users = usersRepository.findAll();
-        Collections.sort(users);
+        List<Users> users;
+        (users = usersRepository.findAll()).sort((o1, o2) -> o2.getTotalBalance().compareTo(o1.getTotalBalance()));
         response.put("fabrics", fabrics);
         response.put("user", user);
         response.put("users", users);
@@ -84,10 +87,18 @@ public class DashboardController {
         Map<String, Object> response = new HashMap<>();
         Users user = usersRepository.findById(userID);
         Fabrics fabric = fabricsRepository.findById(id);
-        if (user == null || fabric == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        if (user.getsilverBalance() < fabric.getPrice())
-            return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
+        if (fabric == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Such a plant does not exist in the database.");
+        }
+        if (user == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Such a user does not exist in the database.");
+        }
+        if (user.getsilverBalance() < fabric.getPrice()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "The user lacks money.");
+        }
         else {
             UserFabrics userFabric = new UserFabrics(user, fabric, fabric.getminingPerSecond());
             userFabricsRepository.save(userFabric);
@@ -104,10 +115,14 @@ public class DashboardController {
         Map<String, Object> response = new HashMap<>();
         UserFabrics fabric = userFabricsRepository.findById(id);
         Users user = fabric.getMaster();
-        if (user==null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        if (user.getsilverBalance() < fabric.getFabric().getupgrade())
-            return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
+        if (user == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Such a user does not exist in the database.");
+        }
+        if (user.getsilverBalance() < fabric.getFabric().getupgrade()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "The user does not have enough money to complete the operation.");
+        }
         else {
             user.setincrease(user.getincrease() + fabric.getminingPerSecond());
             fabric.setminingPerSecond(fabric.getminingPerSecond() + fabric.getminingPerSecond());
@@ -151,13 +166,24 @@ public class DashboardController {
 
     @GetMapping("api/user/exchange")
     public ResponseEntity<Map<String, Object>> exchangeGold(@RequestParam Map<String, Object> request) {
-        System.out.println("mySilverCoins="+request.get("mySilverCoins"));
-        System.out.println("myGoldCoins="+request.get("myGoldCoins"));
         double mySilverCoins = Double.parseDouble(request.get("mySilverCoins").toString());
         double myGoldCoins = Double.parseDouble(request.get("myGoldCoins").toString());
         Users user = usersRepository.findById(Integer.parseInt(request.get("id").toString()));
-        if (user == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (user == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Such a user does not exist in the database.");
+        }
+        if (myGoldCoins<0){
+            if (Math.abs(myGoldCoins)>user.getgoldBalance()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "The user does not have the amount specified in the account.");
+            }
+        }else{
+            if (Math.abs(mySilverCoins)>user.getsilverBalance()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "The user does not have the amount specified in the account.");
+            }
+        }
         user.setgoldBalance(user.getgoldBalance() + myGoldCoins);
         user.setsilverBalance(user.getsilverBalance() + mySilverCoins);
         usersRepository.save(user);

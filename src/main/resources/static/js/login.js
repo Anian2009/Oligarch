@@ -7,7 +7,7 @@ $(document).ready(function () {
             dataType: 'json',
             contentType: 'application/json',
             data: JSON.stringify({
-                name: $('#lInputName').val(),
+                email: $('#lInputEmail').val(),
                 password: $('#lInputPassword').val()
             }),
             success: function (data) {
@@ -24,7 +24,7 @@ $(document).ready(function () {
                     window.location = '../user/dashboard.html';
                 },
             error: function (jqXHR) {
-                alert(jqXHR.status +" : "+jqXHR.statusText);
+                alert(jqXHR.responseJSON.status +" - "+jqXHR.responseJSON.message);
             }
         })
     });

@@ -25,8 +25,8 @@ $(document).ready(function () {
             fabricsList(data);
         },
         error: function (jqXHR) {
-            alert(jqXHR.status + " : "+jqXHR.statusText);
-        }
+            alert(jqXHR.responseJSON.status +" - "+jqXHR.responseJSON.message);
+        },
     });
 
     let buyFabric = function (id) {
@@ -39,9 +39,9 @@ $(document).ready(function () {
             success: function (data) {
                 alert("Congratulations! You have become the owner of a new plant. Information about your factories is on the main page.");
             },
-            error: function (jqXHR){
-                alert("Unfortunately, you do not have enough money to buy the selected plant.");
-            }
+            error: function (jqXHR) {
+                alert(jqXHR.responseJSON.status +" - "+jqXHR.responseJSON.message);
+            },
         })
     };
 
