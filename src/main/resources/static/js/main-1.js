@@ -2,16 +2,11 @@ $(document).ready(function () {
 
     console.log("Hello main-1.js");
 
-    let goldCoins;
-    let silverCoins;
-
     let userInafo = function (data) {
         document.getElementById('userName').innerHTML = '<text>' + data.name + ':</text>';
         document.getElementById('silverBal').innerHTML = '<text>Silver balance - ' + data.silverBalance + ';</text>';
         document.getElementById('goldBal').innerHTML = '<text>Gold balance - ' + data.goldBalance + ';</text>';
         document.getElementById('increase').innerHTML = '<text>Increase per second - ' + data.increase + ';</text>';
-        goldCoins = Math.trunc(data.goldBalance);
-        silverCoins = Math.trunc(data.silverBalance);
     };
 
     let usersInafo = function (data) {

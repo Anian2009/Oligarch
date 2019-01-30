@@ -100,6 +100,7 @@ $(document).ready(function () {
     });
 
     $('#goldSellGold').change(function () {
+        var goldCoins = Math.trunc($('#goldBal').text());
         if ($('#goldSellGold').val() > goldCoins) {
             alert("You're not as rich as you want.");
             $('#goldSellGold').val(goldCoins);
@@ -108,6 +109,8 @@ $(document).ready(function () {
     });
 
     $('#silverBuyGold').change(function () {
+
+        var silverCoins = Math.trunc($('#silverBal').text());
         if ($('#silverBuyGold').val() > silverCoins) {
             alert("You're not as rich as you want.");
             $('#silverBuyGold').val(silverCoins);
