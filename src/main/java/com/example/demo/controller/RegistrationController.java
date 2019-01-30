@@ -85,7 +85,7 @@ public class RegistrationController {
                     "Hello %s! \n" +
                             "Welcome to 'Oligarch'. " +
                             "\n" +
-                            "To complete registration, please follow the link.: - http://localhost:8080/activation.html?code=%s",
+                            "To complete registration, please follow the link.: - https://oligarch.herokuapp.com/activation.html?code=%s",
                     body.get("name"), activationCode);
             try {
                 mailSender.send(body.get("email"), "Activation code", message);
