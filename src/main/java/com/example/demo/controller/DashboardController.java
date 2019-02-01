@@ -51,6 +51,9 @@ public class DashboardController {
     @GetMapping("api/user/dashboard")
     public ResponseEntity<Map<String, Object>> myFabric(@RequestParam Integer id) {
         Map<String, Object> response = new HashMap<>();
+        if (id == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request.");
+        }
         Users user = usersRepository.findById(id);
         if (user == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -74,7 +77,7 @@ public class DashboardController {
     }
 
     @PostMapping("api/user/buy-factory")
-    public ResponseEntity<Map<String, Object>> bayFabric(@RequestBody Map<String,Object> body /*Integer id, @RequestParam Integer userID*/) {
+    public ResponseEntity<Map<String, Object>> bayFabric(@RequestBody Map<String,Object> body) {
         Map<String, Object> response = new HashMap<>();
         Users user = usersRepository.findById(Integer.parseInt(body.get("userID").toString()));
         Fabrics fabric = fabricsRepository.findById(Integer.parseInt(body.get("id").toString()));
@@ -105,22 +108,24 @@ public class DashboardController {
     public ResponseEntity<Map<String, Object>> upgrade(@PathVariable Integer id) {
         Map<String, Object> response = new HashMap<>();
         UserFabrics fabric = userFabricsRepository.findById(id);
-        Users user = fabric.getMaster();
-        if (user == null){
+
+        try {
+            Users user = fabric.getMaster();
+            if (user.getSilverBalance() < fabric.getFabric().getUpgrade()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "The user does not have enough money to complete the operation.");
+            }
+            else {
+                userFabricsRepository.save(fabric.update());
+                List<UserFabrics> fabrics = userFabricsRepository.findByMaster(user);
+                response.put("fabrics", fabrics);
+                response.put("message", "OK");
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+        }catch (NullPointerException ex){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "Such a user does not exist in the database.");
         }
-        if (user.getSilverBalance() < fabric.getFabric().getUpgrade()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "The user does not have enough money to complete the operation.");
-        }
-        else {
-            userFabricsRepository.save(fabric.update());
-            List<UserFabrics> fabrics = userFabricsRepository.findByMaster(user);
-            response.put("fabrics", fabrics);
-            response.put("message", "OK");
-        }
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("api/user/buy-gold-status")

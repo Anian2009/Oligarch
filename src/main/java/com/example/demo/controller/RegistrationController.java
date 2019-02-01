@@ -113,7 +113,7 @@ public class RegistrationController {
     }
 
     @PutMapping("activation-code/{code}")
-    public ResponseEntity<Map<String, Object>> activationCode(@PathVariable String code/* */) {
+    public ResponseEntity<Map<String, Object>> activationCode(@PathVariable String code) {
         Map<String, Object> response = new HashMap<>();
         Users user = usersRepository.findByActivationCode(code);
         if (user != null) {
